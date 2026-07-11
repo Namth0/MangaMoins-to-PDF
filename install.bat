@@ -22,7 +22,7 @@ if errorlevel 1 (
 )
 
 echo [2/3] Installation des dependances de base...
-call venv\Scripts\pip.exe install --upgrade pip >nul
+call venv\Scripts\python.exe -m pip install --upgrade pip >nul 2>&1
 call venv\Scripts\pip.exe install -r requirements.txt
 if errorlevel 1 (
     echo [ERREUR] L'installation des dependances a echoue.

@@ -205,7 +205,8 @@ class MangaMoinsScraper:
         except ImportError as exc:
             raise ScraperError(
                 "Playwright n'est pas installé. "
-                "Installez-le avec: pip install playwright && playwright install chromium"
+                "Installez-le avec: pip install -r requirements-optional.txt "
+                "&& playwright install chromium"
             ) from exc
 
         with sync_playwright() as p:
