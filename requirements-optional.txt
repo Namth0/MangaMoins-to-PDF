@@ -1,0 +1,4 @@
+# Fallback navigateur headless, seulement nécessaire si l'API et le HTML
+# de MangaMoins sont bloqués (voir mangamoins_scraper/scraper.py).
+# Installation : pip install -r requirements-optional.txt && playwright install chromium
+playwright>=1.40.0

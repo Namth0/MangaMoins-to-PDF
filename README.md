@@ -13,8 +13,28 @@ personnel.
 
 ## Installation
 
+### Windows, sans ligne de commande
+
+Double-cliquez sur `install.bat`. Il installe Python (si nécessaire, à vous
+de l'installer manuellement depuis [python.org](https://www.python.org/downloads/)
+en cochant "Add python.exe to PATH"), crée un environnement virtuel et
+installe les dépendances. Le support navigateur (Playwright) est proposé en
+option pendant l'installation.
+
+### Manuelle (toutes plateformes)
+
 ```bash
 pip install -r requirements.txt
+```
+
+Cela installe uniquement les dépendances de base (`requests`, `pillow`,
+`img2pdf`), suffisantes dans la grande majorité des cas.
+
+Le fallback navigateur headless (Playwright) n'est nécessaire que si l'API
+et le HTML de MangaMoins sont bloqués (voir plus bas). Pour l'installer :
+
+```bash
+pip install -r requirements-optional.txt
 playwright install chromium
 ```
 
@@ -25,9 +45,6 @@ relancez simplement :
 playwright install
 ```
 
-L'installation de Chromium (Playwright) n'est nécessaire que si le
-fallback navigateur est utilisé (voir plus bas).
-
 ## Utilisation
 
 ```bash
@@ -37,7 +54,8 @@ python main.py OP1188
 # À partir de l'URL complète, avec un nom de fichier personnalisé
 python main.py https://mangamoins.com/scan/OP1188 -o one-piece-1188.pdf
 
-# Forcer le fallback navigateur headless (si l'API/HTML sont bloqués)
+# Forcer le fallback navigateur headless (si l'API/HTML sont bloqués,
+# nécessite `pip install -r requirements-optional.txt` au préalable)
 python main.py OP1188 --use-playwright
 
 # Logs détaillés
@@ -79,10 +97,25 @@ mangamoins-scraper/
 │   ├── __init__.py
 │   ├── scraper.py      # logique de scraping (API, HTML, Playwright)
 │   └── pdf_builder.py  # assemblage des images en PDF
-├── main.py             # point d'entrée CLI
-├── requirements.txt
+├── tests/               # tests unitaires (pytest)
+├── main.py              # point d'entrée CLI
+├── install.bat           # installation en un clic (Windows)
+├── requirements.txt          # dépendances de base
+├── requirements-optional.txt # fallback navigateur (Playwright)
+├── requirements-dev.txt      # dépendances de développement (pytest)
 └── README.md
 ```
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+Les tests couvrent la logique pure (extraction de slug, détection
+d'extension, sondage du nombre de pages, détection webp) via des mocks ;
+aucun appel réseau réel n'est effectué.
 
 ## Limitations connues
 
