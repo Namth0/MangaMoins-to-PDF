@@ -31,10 +31,12 @@ if errorlevel 1 (
 )
 
 echo.
-echo [3/3] Support navigateur optionnel (fallback si le site bloque le scraping)
-echo Cette etape telecharge Chromium ^(~300 Mo^) et n'est utile qu'en cas de probleme.
-set /p INSTALL_PLAYWRIGHT="Installer le support navigateur maintenant ? (o/N) "
-if /i "!INSTALL_PLAYWRIGHT!"=="o" (
+echo [3/3] Support navigateur (Playwright)
+echo MangaMoins bloque l'acces direct aux images : ce module est
+echo necessaire pour telecharger la plupart des chapitres aujourd'hui.
+echo Cette etape telecharge Chromium ^(~300 Mo^), recommandee.
+set /p INSTALL_PLAYWRIGHT="Installer le support navigateur maintenant ? (O/n) "
+if /i not "!INSTALL_PLAYWRIGHT!"=="n" (
     call venv\Scripts\pip.exe install -r requirements-optional.txt
     call venv\Scripts\python.exe -m playwright install chromium
 ) else (
