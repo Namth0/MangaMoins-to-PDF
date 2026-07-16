@@ -1,0 +1,6 @@
+# Dépendances pour builder l'exécutable de la GUI (PyInstaller).
+# Usage : pip install -r requirements-build.txt && pyinstaller MangaMoins-to-PDF.spec
+-r requirements.txt
+-r requirements-optional.txt
+pyinstaller>=6.10.0
+pyinstaller-hooks-contrib>=2024.9

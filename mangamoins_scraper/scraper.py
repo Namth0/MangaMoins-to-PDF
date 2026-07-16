@@ -260,7 +260,9 @@ class MangaMoinsScraper:
 
             if base is None:
                 try:
-                    html_base, html_ext, html_count_hint = self._resolve_base_from_html(slug, referer)
+                    html_base, html_ext, html_count_hint = self._resolve_base_from_html(
+                        slug, referer
+                    )
                     base, ext, source = html_base, html_ext, "html"
                     count_hint = count_hint or html_count_hint
                 except Exception as exc:  # noqa: BLE001

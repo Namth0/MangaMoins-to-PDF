@@ -11,6 +11,10 @@ env/
 # Output artifacts
 *.pdf
 
+# PyInstaller build output (the committed .spec rebuilds these)
+build/
+dist/
+
 # Editor / tooling
 .cursor/
 .vscode/
