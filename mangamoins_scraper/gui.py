@@ -24,6 +24,16 @@ from .scraper import MangaMoinsScraper, ScraperError
 WINDOW_TITLE = "MangaMoins vers PDF"
 MISSING_BROWSER_MARKER = "Executable doesn't exist"
 
+# Playwright's bundled Node driver otherwise resolves its default browser
+# cache relative to its own install location. When frozen by PyInstaller
+# that location is a fresh temp folder wiped after every run, so without
+# this override Chromium would need to be re-downloaded (and fail to be
+# found) on every single launch instead of once.
+_BROWSERS_PATH = Path(
+    os.environ.get("LOCALAPPDATA", str(Path.home()))
+) / "MangaMoins-to-PDF" / "browsers"
+os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(_BROWSERS_PATH))
+
 
 def default_output_name(target: str) -> str:
     """Derive a default PDF filename (e.g. 'OP1188.pdf') from a slug or URL."""
@@ -127,8 +137,11 @@ class _DownloadWorker(threading.Thread):
         sys.argv = ["playwright", "install", "chromium"]
         try:
             playwright_main()
-        except SystemExit:
-            pass
+        except SystemExit as exc:
+            if exc.code not in (0, None):
+                raise RuntimeError(
+                    f"Échec du téléchargement du navigateur (code {exc.code})."
+                ) from exc
         finally:
             sys.argv = original_argv
 
